@@ -1,0 +1,372 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 「NOIp2018模拟赛10-25N」graph - 启发式合并 + 最小生成树 + pb_ds | hk_cnyali's Blog</title><meta name="description" content="「NOIp2018模拟赛10-25N」graph - 启发式合并 + 最小生成树 + pb_ds - hk_cnyali"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.jpg"><link rel="stylesheet" href="https:////cdn.staticfile.org/KaTeX/0.7.1/katex.min.css"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css"><link rel="search" type="application/opensearchdescription+xml" href="/atom.xml" title="hk_cnyali's Blog"><link rel="stylesheet" href="/css/style.css"><link rel="search" type="application/opensearchdescription+xml" href="http://hk-cnyali.com/atom.xml" title="hk_cnyali's Blog"></head><body><div class="wrapper" id="wrap"><header class="header"><h1 class="title">hk_cnyali's Blog</h1><section><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">Home</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">Archives</a></li><li class="nav-list-item"><a class="nav-list-link" href="/About-Me/" target="_self">About</a></li><li class="nav-list-item"><a class="nav-list-link" href="/Tags/" target="_self">Tags</a></li><li class="nav-list-item"><a class="nav-list-link" href="/Debug/" target="_self">Debug</a></li><li class="nav-list-item"><a class="nav-list-link" href="/Friendly-Links/" target="_self">Friendly-Links</a></li><li class="nav-list-item"><a href="javascript:;" class="popup-trigger"> Search </a></li><div class="site-search">
+<div class="popup search-popup local-search-popup" id="search-popup">
+<div class="local-search-header clearfix">
+<span class="search-icon">
+<i class="fa fa-search"></i>
+</span>
+<span class="popup-btn-close">
+<i class="fa fa-times-circle"></i>
+</span>
+<div class="local-search-input-wrapper">
+<input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+</div>
+</div>
+<div id="local-search-result"></div>
+</div>
+</div></ul></section></header><main class="container"><aside id="sidebar" class="sidebar"> 
+<div class="sidebar-inner">  
+<ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active">文章目录</li></ul><div class="post-toc">
+<div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Solution"><span class="nav-number">1.</span> <span class="nav-text">Solution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Code"><span class="nav-number">2.</span> <span class="nav-text">Code</span></a></li></ol></div>
+</div></div>
+</aside><div class="post"><article class="post-block"><h1 class="post-title">「NOIp2018模拟赛10-25N」graph - 启发式合并 + 最小生成树 + pb_ds</h1><div class="post-info">Posted at 18-10-29 16:49, Updated at 20-2-25 23:18</div><div class="post-content"><p>众所周知,小 naive 有一张 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">n</span></span></span></span> 个点,<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">m</span></span></span></span> 条边的带权无向图。</p>
+<p>第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.65952em;"></span><span class="strut bottom" style="height:0.65952em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">i</span></span></span></span> 个点的颜色为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">c_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">c</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit">i</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span> 。<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mo>(</mo><mi>s</mi><mo separator="true">,</mo><mi>t</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">d(s, t)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit">d</span><span class="mopen">(</span><span class="mord mathit">s</span><span class="mpunct">,</span><span class="mord mathit">t</span><span class="mclose">)</span></span></span></span>表示从点 s 到点 t 的权值最小的路径的权值,一条路径的权值定义为路径上权值最大的边的权值。</p>
+<p>求所有满足 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>u</mi><mo>&lt;</mo><mi>v</mi><mo separator="true">,</mo><mi mathvariant="normal">∣</mi><msub><mi>c</mi><mi>u</mi></msub><mo>−</mo><msub><mi>c</mi><mi>v</mi></msub><mi mathvariant="normal">∣</mi><mo>≥</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">u &lt; v, |c_u - c_v | \ge L </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit">u</span><span class="mrel">&lt;</span><span class="mord mathit" style="margin-right:0.03588em;">v</span><span class="mpunct">,</span><span class="mord mathrm">∣</span><span class="mord"><span class="mord mathit">c</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit">u</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mbin">−</span><span class="mord"><span class="mord mathit">c</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit" style="margin-right:0.03588em;">v</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mord mathrm">∣</span><span class="mrel">≥</span><span class="mord mathit">L</span></span></span></span>的点对 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>(</mo><mi>u</mi><mo separator="true">,</mo><mi>v</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">(u, v)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mopen">(</span><span class="mord mathit">u</span><span class="mpunct">,</span><span class="mord mathit" style="margin-right:0.03588em;">v</span><span class="mclose">)</span></span></span></span> 的 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mo>(</mo><mi>u</mi><mo separator="true">,</mo><mi>v</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">d(u, v)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit">d</span><span class="mopen">(</span><span class="mord mathit">u</span><span class="mpunct">,</span><span class="mord mathit" style="margin-right:0.03588em;">v</span><span class="mclose">)</span></span></span></span> 之和。</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi><mo>≤</mo><mn>2</mn><mo>×</mo><mn>1</mn><msup><mn>0</mn><mn>5</mn></msup><mo separator="true">,</mo><mi>m</mi><mo>≤</mo><mn>5</mn><mo>×</mo><mn>1</mn><msup><mn>0</mn><mn>5</mn></msup></mrow><annotation encoding="application/x-tex">n\le 2 \times 10^5, m\le 5 \times 10^5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="base textstyle uncramped"><span class="mord mathit">n</span><span class="mrel">≤</span><span class="mord mathrm">2</span><span class="mbin">×</span><span class="mord mathrm">1</span><span class="mord"><span class="mord mathrm">0</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">5</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mpunct">,</span><span class="mord mathit">m</span><span class="mrel">≤</span><span class="mord mathrm">5</span><span class="mbin">×</span><span class="mord mathrm">1</span><span class="mord"><span class="mord mathrm">0</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">5</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span></p>
+<a id="more"></a>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>可以发现,产生贡献的答案一定是最小生成树上的边</p>
+<p>对于一条新加进最小生成树的边<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo separator="true">,</mo><mi>z</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">(x,y,z)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mopen">(</span><span class="mord mathit">x</span><span class="mpunct">,</span><span class="mord mathit" style="margin-right:0.03588em;">y</span><span class="mpunct">,</span><span class="mord mathit" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span>而言,在<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span>所在连通块中的所有点都会对<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.03588em;">y</span></span></span></span>所在连通块中的所有满足<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">∣</mi><msub><mi>c</mi><mi>u</mi></msub><mo>−</mo><msub><mi>c</mi><mi>v</mi></msub><mi mathvariant="normal">∣</mi><mo>≥</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">|c_u -c_v|\ge L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">∣</span><span class="mord"><span class="mord mathit">c</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit">u</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mbin">−</span><span class="mord"><span class="mord mathit">c</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit" style="margin-right:0.03588em;">v</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mord mathrm">∣</span><span class="mrel">≥</span><span class="mord mathit">L</span></span></span></span>的点产生贡献</p>
+<p>那么对每个连通块维护一颗平衡树就可以了,并且需要启发式合并</p>
+<p>由于平衡树需要支持的操作很少,所以只需要<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>b</mi><mi mathvariant="normal">_</mi><mi>d</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">pb\_ds</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:1.00444em;vertical-align:-0.31em;"></span><span class="base textstyle uncramped"><span class="mord mathit">p</span><span class="mord mathit">b</span><span class="mord mathrm" style="margin-right:0.02778em;">_</span><span class="mord mathit">d</span><span class="mord mathit">s</span></span></span></span></p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/extc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> __gnu_pbds;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">read</span><span class="params">(<span class="keyword">int</span> &amp;x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> c = getchar();</span><br><span class="line">    <span class="keyword">int</span> p = <span class="number">1</span>;</span><br><span class="line">    x = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(!<span class="built_in">isdigit</span>(c))&#123;</span><br><span class="line">        <span class="keyword">if</span>(c == <span class="string">'-'</span>)p = <span class="number">-1</span>;</span><br><span class="line">        c = getchar();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">isdigit</span>(c))&#123;</span><br><span class="line">        x = (x &lt;&lt; <span class="number">1</span>) + (x &lt;&lt; <span class="number">3</span>) + (c ^ <span class="string">'0'</span>);</span><br><span class="line">        c = getchar();</span><br><span class="line">    &#125;</span><br><span class="line">    x *= p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">200050</span>, maxm = <span class="number">500050</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">edge</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> u, v, w;</span><br><span class="line">&#125;e[maxm];</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mp make_pair</span></span><br><span class="line">tree&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;, null_type, less&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; &gt;, rb_tree_tag, tree_order_statistics_node_update&gt;se[maxn];</span><br><span class="line">tree&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;, null_type, less&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; &gt;, rb_tree_tag, tree_order_statistics_node_update&gt;::iterator it;</span><br><span class="line"><span class="keyword">int</span> c[maxn], n, m, l, f[maxn], cnt;</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> ans;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">register</span> <span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n + <span class="number">1</span>; ++i)&#123;</span><br><span class="line">        f[i] = i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">getf</span><span class="params">(<span class="keyword">int</span> u)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> f[u] == u ? u : f[u] = getf(f[u]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">merg</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> v)</span></span>&#123;</span><br><span class="line">    f[u] = v;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(edge a, edge b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a.w &lt; b.w;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    freopen(<span class="string">"graph.in"</span>, <span class="string">"r"</span>, <span class="built_in">stdin</span>);</span><br><span class="line">    freopen(<span class="string">"graph.out"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</span><br><span class="line">    read(n), read(m), read(l);</span><br><span class="line">    init();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">register</span> <span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i)&#123;</span><br><span class="line">        read(c[i]);</span><br><span class="line">        se[i].insert(mp(c[i], ++cnt));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">register</span> <span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; ++i)&#123;</span><br><span class="line">        read(e[i].u), read(e[i].v), read(e[i].w);</span><br><span class="line">    &#125;</span><br><span class="line">    sort(e + <span class="number">1</span>, e + <span class="number">1</span> + m, cmp);</span><br><span class="line">    <span class="keyword">int</span> fu, fv, szu, szv, dis1, dis2;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">register</span> <span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; ++i)&#123;</span><br><span class="line">        fu = getf(e[i].u), fv = getf(e[i].v);</span><br><span class="line">        <span class="keyword">if</span>(fu != fv)&#123;</span><br><span class="line">            szu = se[fu].size(); szv = se[fv].size();</span><br><span class="line">            <span class="keyword">if</span>(szu &gt; szv)swap(fu, fv), swap(szu, szv);</span><br><span class="line">            <span class="keyword">for</span>(it = se[fu].begin(); it != se[fu].end(); ++it)&#123;</span><br><span class="line">                <span class="keyword">int</span> val = (*it).first + l;</span><br><span class="line">                dis1 = se[fv].order_of_key(mp(val - <span class="number">1</span>, ++cnt));</span><br><span class="line">                dis1 = szv - dis1;</span><br><span class="line">                <span class="keyword">if</span>(dis1 &gt; <span class="number">0</span>)ans += <span class="number">1l</span>l * e[i].w * dis1;</span><br><span class="line">                val = (*it).first - l;</span><br><span class="line">                dis2 = se[fv].order_of_key(mp(val, ++cnt));</span><br><span class="line">                <span class="keyword">if</span>(dis1 + dis2 &gt; szv &amp;&amp; l == <span class="number">0</span>)&#123;</span><br><span class="line">                    dis2 = szv - dis1;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(dis2 &gt; <span class="number">0</span>)ans += <span class="number">1l</span>l * e[i].w * dis2;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span>(it = se[fu].begin(); it != se[fu].end(); ++it)&#123;</span><br><span class="line">                se[fv].insert(mp((*it).first, ++cnt));</span><br><span class="line">            &#125;</span><br><span class="line">            se[fu].clear();</span><br><span class="line">            merg(fu, fv);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%lld\n"</span>, ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div><div class="article-meta"><div class="tags"><i class="icon icon-tag"></i><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/pb-ds/">pb_ds</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/启发式合并/">启发式合并</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/最小生成树/">最小生成树</a><span class="tag-list-count">11</span></li></ul></div></div></article></div></main><footer><div class="paginator"><a class="prev" href="/2018/10/29/「NOIp模拟赛10-27」c-树状数组/"><span>「NOIp模拟赛10-27」c - 树状数组</span></a><a class="next" href="/2018/10/29/10-29模拟赛-Summary/"><span>10-29模拟赛 Summary</span></a></div><div class="v" id="comments"> </div><script src="//cdn.jun6.net/av-min.js"></script>
+<script src="//cdn.jun6.net/Valine.min.js"></script>
+<script type="text/javascript"> new Valine({ el: '#comments' , verify: "true", notify: "true", appId: "2wXHHL7KBB6DpOQTCnkO5zIA-gzGzoHsz", appKey: "dJgClhnm2rklwPRlXrTRdXsz", placeholder: "快来评论吧~~~（有人@你时会有邮件提醒，建议填写真实邮箱噢）", avatar:"mm", pageSize:"6" || 10 }); </script><link rel="stylesheet" href="/css/partial/valine.css"><script src="//libs.baidu.com/jquery/2.1.4/jquery.min.js"></script><script>$(document).ready(function(){
+    $("#comments").on('click', 'span.vat',function(){
+        $(this).parent('div.vmeta').next("div.vcontent").after($("div.vwrap"));
+        $('textarea#veditor').focus();
+    })
+})</script><div class="copyright"><p>© 2017 - 2020 靡不有初，鲜克有终</p><p>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>, theme by <a href="https://github.com/hk-cnyali" target="_blank">hk_cnyali</a>.</p></div><script type="text/javascript" src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script><script>// Popup Window;
+var isfetched = false;
+var isXml = true;
+// Search DB path;
+var search_path = "search.json";
+if (search_path.length === 0) {
+  search_path = "search.xml";
+} else if (/json$/i.test(search_path)) {
+  isXml = false;
+}
+var path = "/" + search_path;
+// monitor main search box;
+// console.log(path);
+
+var onPopupClose = function (e) {
+  // console.log("onPopupClose");
+  $('.popup').hide();
+  $('#local-search-input').val('');
+  $('.search-result-list').remove();
+  $('#no-result').remove();
+  $(".local-search-pop-overlay").remove();
+  $('body').css('overflow', '');
+}
+
+function proceedsearch() {
+  // console.log("proceed_search");
+  $("body")
+    .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+    .css('overflow', 'hidden');
+  $('.search-popup-overlay').click(onPopupClose);
+  $('.popup').toggle();
+  var $localSearchInput = $('#local-search-input');
+  $localSearchInput.attr("autocapitalize", "none");
+  $localSearchInput.attr("autocorrect", "off");
+  $localSearchInput.focus();
+}
+
+// search function;
+var searchFunc = function(path, search_id, content_id) {
+  // console.log("searchFunc");
+  'use strict';
+
+  // start loading animation
+  $("body")
+    .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+      '<div id="search-loading-icon">' +
+      '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+      '</div>' +
+      '</div>')
+    .css('overflow', 'hidden');
+  $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+  // console.log("start_loading_animation");
+
+  // console.log(path);
+  // console.log(isXml);
+  // console.log(document.getElementById(search_id));
+
+  $.ajax({
+    url: path,
+    dataType: isXml ? "xml" : "json",
+    async: true,
+    error: function(res) {
+      // console.log("error!");
+    }, 
+    success: function(res) {
+      // console.log("success!");
+      // get the contents from search data
+      isfetched = true;
+      $('.popup').detach().appendTo('.header');
+      var datas = isXml ? $("entry", res).map(function() {
+        return {
+          title: $("title", this).text(),
+          content: $("content",this).text(),
+          url: $("url" , this).text()
+        };
+      }).get() : res;
+      var input = document.getElementById(search_id);
+      // console.log("input = " + input);
+      var resultContent = document.getElementById(content_id);
+      // console.log("resultContent = " + resultContent);
+      var inputEventFunction = function() {
+        var searchText = input.value.trim().toLowerCase();
+        var keywords = searchText.split(/[\s\-]+/);
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        var resultItems = [];
+        if (searchText.length > 0) {
+          // perform local searching
+          datas.forEach(function(data) {
+            var isMatch = false;
+            var hitCount = 0;
+            var searchTextCount = 0;
+            var title = data.title.trim();
+            var titleInLowerCase = title.toLowerCase();
+            var content = data.content.trim().replace(/<[^>]+>/g,"");
+            var contentInLowerCase = content.toLowerCase();
+            var articleUrl = decodeURIComponent(data.url);
+            var indexOfTitle = [];
+            var indexOfContent = [];
+            // only match articles with not empty titles
+            if(title != '') {
+              keywords.forEach(function(keyword) {
+                function getIndexByWord(word, text, caseSensitive) {
+                  var wordLen = word.length;
+                  if (wordLen === 0) {
+                    return [];
+                  }
+                  var startPosition = 0, position = [], index = [];
+                  if (!caseSensitive) {
+                    text = text.toLowerCase();
+                    word = word.toLowerCase();
+                  }
+                  while ((position = text.indexOf(word, startPosition)) > -1) {
+                    index.push({position: position, word: word});
+                    startPosition = position + wordLen;
+                  }
+                  return index;
+                }
+
+                indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+              });
+              if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                isMatch = true;
+                hitCount = indexOfTitle.length + indexOfContent.length;
+              }
+            }
+
+            // show search results
+
+            if (isMatch) {
+              // sort index by position of keyword
+
+              [indexOfTitle, indexOfContent].forEach(function (index) {
+                index.sort(function (itemLeft, itemRight) {
+                  if (itemRight.position !== itemLeft.position) {
+                    return itemRight.position - itemLeft.position;
+                  } else {
+                    return itemLeft.word.length - itemRight.word.length;
+                  }
+                });
+              });
+
+              // merge hits into slices
+
+              function mergeIntoSlice(text, start, end, index) {
+                var item = index[index.length - 1];
+                var position = item.position;
+                var word = item.word;
+                var hits = [];
+                var searchTextCountInSlice = 0;
+                while (position + word.length <= end && index.length != 0) {
+                  if (word === searchText) {
+                    searchTextCountInSlice++;
+                  }
+                  hits.push({position: position, length: word.length});
+                  var wordEnd = position + word.length;
+
+                  // move to next position of hit
+
+                  index.pop();
+                  while (index.length != 0) {
+                    item = index[index.length - 1];
+                    position = item.position;
+                    word = item.word;
+                    if (wordEnd > position) {
+                      index.pop();
+                    } else {
+                      break;
+                    }
+                  }
+                }
+                searchTextCount += searchTextCountInSlice;
+                return {
+                  hits: hits,
+                  start: start,
+                  end: end,
+                  searchTextCount: searchTextCountInSlice
+                };
+              }
+
+              var slicesOfTitle = [];
+              if (indexOfTitle.length != 0) {
+                slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+              }
+
+              var slicesOfContent = [];
+              while (indexOfContent.length != 0) {
+                var item = indexOfContent[indexOfContent.length - 1];
+                var position = item.position;
+                var word = item.word;
+                // cut out 100 characters
+                var start = position - 20;
+                var end = position + 80;
+                if(start < 0){
+                  start = 0;
+                }
+                if (end < position + word.length) {
+                  end = position + word.length;
+                }
+                if(end > content.length){
+                  end = content.length;
+                }
+                slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+              }
+
+              // sort slices in content by search text's count and hits' count
+
+              slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                  return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                  return sliceRight.hits.length - sliceLeft.hits.length;
+                } else {
+                  return sliceLeft.start - sliceRight.start;
+                }
+              });
+
+              // select top N slices in content
+
+              var upperBound = parseInt("1");
+              if (upperBound >= 0) {
+                slicesOfContent = slicesOfContent.slice(0, upperBound);
+              }
+              // console.log(upperBound);
+
+              // highlight title and content
+
+              function highlightKeyword(text, slice) {
+                var result = '';
+                var prevEnd = slice.start;
+                slice.hits.forEach(function (hit) {
+                  result += text.substring(prevEnd, hit.position);
+                  var end = hit.position + hit.length;
+                  result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                  prevEnd = end;
+                });
+                result += text.substring(prevEnd, slice.end);
+                return result;
+              }
+
+              var resultItem = '';
+
+              if (slicesOfTitle.length != 0) {
+                resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+              } else {
+                resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+              }
+
+              slicesOfContent.forEach(function (slice) {
+                resultItem += "<a>" +
+                  "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                  "...</p>" + "</a>";
+              });
+
+              resultItem += "</li>";
+              resultItems.push({
+                item: resultItem,
+                searchTextCount: searchTextCount,
+                hitCount: hitCount,
+                id: resultItems.length
+              });
+            }
+          })
+        };
+        if (keywords.length === 1 && keywords[0] === "") {
+          resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+        } else if (resultItems.length === 0) {
+          resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+        } else {
+          resultItems.sort(function (resultLeft, resultRight) {
+            if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+              return resultRight.searchTextCount - resultLeft.searchTextCount;
+            } else if (resultLeft.hitCount !== resultRight.hitCount) {
+              return resultRight.hitCount - resultLeft.hitCount;
+            } else {
+              return resultRight.id - resultLeft.id;
+            }
+          });
+          var searchResultList = '<ul class=\"search-result-list\">';
+          resultItems.forEach(function (result) {
+            searchResultList += result.item;
+          })
+          searchResultList += "</ul>";
+          resultContent.innerHTML = searchResultList;
+        }
+      }
+
+      if ('auto' === "auto") {
+        input.addEventListener('input', inputEventFunction);
+      } else {
+        $('.search-icon').click(inputEventFunction);
+        input.addEventListener('keypress', function (event) {
+          if (event.keyCode === 13) {
+            inputEventFunction();
+          }
+        });
+      }
+
+      // remove loading animation
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+
+      proceedsearch();
+    }
+  });
+}
+
+// handle and trigger popup window;
+$('.popup-trigger').click(function(e) {
+  e.stopPropagation();
+  if (isfetched === false) {
+    searchFunc(path, 'local-search-input', 'local-search-result');
+  } else {
+    proceedsearch();
+  };
+});
+
+$('.popup-btn-close').click(onPopupClose);
+$('.popup').click(function(e){
+  // console.log("popup.click");
+  e.stopPropagation();
+});
+$(document).on('keyup', function (event) {
+  // console.log("keyup");
+  var shouldDismissSearchPopup = event.which === 27 && $('.search-popup').is(':visible');
+  if (shouldDismissSearchPopup) {
+    onPopupClose();
+  }
+});</script></footer></div><script>var wrap = document.getElementById('wrap');
+window.onload = function () {
+  wrap.className += ' done';
+}
+</script></body></html>

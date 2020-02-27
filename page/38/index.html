@@ -1,0 +1,387 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> hk_cnyali's Blog</title><meta name="description" content="A Blog Powered By Hexo"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.jpg"><link rel="stylesheet" href="https:////cdn.staticfile.org/KaTeX/0.7.1/katex.min.css"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css"><link rel="search" type="application/opensearchdescription+xml" href="/atom.xml" title="hk_cnyali's Blog"><link rel="stylesheet" href="/css/style.css"><link rel="search" type="application/opensearchdescription+xml" href="http://hk-cnyali.com/atom.xml" title="hk_cnyali's Blog"></head><body><div class="wrapper" id="wrap"><header class="header"><h1 class="title">hk_cnyali's Blog</h1><section><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">Home</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">Archives</a></li><li class="nav-list-item"><a class="nav-list-link" href="/About-Me/" target="_self">About</a></li><li class="nav-list-item"><a class="nav-list-link" href="/Tags/" target="_self">Tags</a></li><li class="nav-list-item"><a class="nav-list-link" href="/Debug/" target="_self">Debug</a></li><li class="nav-list-item"><a class="nav-list-link" href="/Friendly-Links/" target="_self">Friendly-Links</a></li><li class="nav-list-item"><a href="javascript:;" class="popup-trigger"> Search </a></li><div class="site-search">
+<div class="popup search-popup local-search-popup" id="search-popup">
+<div class="local-search-header clearfix">
+<span class="search-icon">
+<i class="fa fa-search"></i>
+</span>
+<span class="popup-btn-close">
+<i class="fa fa-times-circle"></i>
+</span>
+<div class="local-search-input-wrapper">
+<input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+</div>
+</div>
+<div id="local-search-result"></div>
+</div>
+</div></ul></section></header><main class="container"><ul class="home post-list"><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2018/01/01/Pollard-Rho大数质因数分解/">Pollard Rho大数质因数分解</a></h2><div class="post-info">Jan 1, 2018</div><div class="post-content"><h3 id="大致思想"><a href="#大致思想" class="headerlink" title="大致思想"></a>大致思想</h3><p>Pollard Rho是一个神奇的玄学算法 我们知道质因数分解用朴素的试除法的话时间复杂度是<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="7.017ex" height="6.176ex" style="vertical-align: -4.171ex;" viewbox="0 -863.1 3021 2659.1" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<path stroke-width="1" id="E1-MJMATHI-4F" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"/>
+<path stroke-width="1" id="E1-MJMAIN-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"/>
+<path stroke-width="1" id="E1-MJMATHI-73" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"/>
+<path stroke-width="1" id="E1-MJMATHI-71" d="M33 157Q33 258 109 349T280 441Q340 441 372 389Q373 390 377 395T388 406T404 418Q438 442 450 442Q454 442 457 439T460 434Q460 425 391 149Q320 -135 320 -139Q320 -147 365 -148H390Q396 -156 396 -157T393 -175Q389 -188 383 -194H370Q339 -192 262 -192Q234 -192 211 -192T174 -192T157 -193Q143 -193 143 -185Q143 -182 145 -170Q149 -154 152 -151T172 -148Q220 -148 230 -141Q238 -136 258 -53T279 32Q279 33 272 29Q224 -10 172 -10Q117 -10 75 30T33 157ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"/>
+<path stroke-width="1" id="E1-MJMATHI-72" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"/>
+<path stroke-width="1" id="E1-MJMATHI-74" d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"/>
+<path stroke-width="1" id="E1-MJMATHI-4E" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"/>
+<path stroke-width="1" id="E1-MJMAIN-29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"/>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
+ <use xlink:href="#E1-MJMATHI-4F" x="0" y="0"/>
+ <use xlink:href="#E1-MJMAIN-28" x="763" y="0"/>
+<g transform="translate(0,-1433)">
+ <use xlink:href="#E1-MJMATHI-73" x="0" y="0"/>
+ <use xlink:href="#E1-MJMATHI-71" x="469" y="0"/>
+ <use xlink:href="#E1-MJMATHI-72" x="930" y="0"/>
+ <use xlink:href="#E1-MJMATHI-74" x="1381" y="0"/>
+ <use xlink:href="#E1-MJMATHI-4E" x="1743" y="0"/>
+ <use xlink:href="#E1-MJMAIN-29" x="2631" y="0"/>
+</g>
+</g>
+</svg>的 Pollard Rho大致思路其实就是利用各种玄学的随机算法去优化暴力。。。</p></div><a class="read-more" href="/2018/01/01/Pollard-Rho大数质因数分解/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/12/31/Luogu-P1197-JSOI2008-星球大战-并查集/">「JSOI2008」星球大战 - 并查集</a></h2><div class="post-info">Dec 31, 2017</div><div class="post-content"><p>题目链接：<a href="https://www.luogu.org/problemnew/show/1197" title="传送门" target="_blank" rel="noopener">传送门</a></p>
+<h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><p>很久以前，在一个遥远的星系，一个黑暗的帝国靠着它的超级武器统治者整个星系。某一天，凭着一个偶然的机遇，一支反抗军摧毁了帝国的超级武器，并攻下了星系中几乎所有的星球。这些星球通过特殊的以太隧道互相直接或间接地连接。 但好景不长，很快帝国又重新造出了他的超级武器。凭借这超级武器的力量，帝国开始有计划地摧毁反抗军占领的星球。由于星球的不断被摧毁，两个星球之间的通讯通道也开始不可靠起来。现在，反抗军首领交给你一个任务：给出原来两个星球之间的以太隧道连通情况以及帝国打击的星球顺序，以尽量快的速度求出每一次打击之后反抗军占据的星球的连通快的个数。（如果两个星球可以通过现存的以太通道直接或间接地连通，则这两个星球在同一个连通块中）。</p></div><a class="read-more" href="/2017/12/31/Luogu-P1197-JSOI2008-星球大战-并查集/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/12/31/Luogu-P2319-HNOI2006-超级英雄-P1640-SCOI2010-连续攻击游戏/">「HNOI2006」超级英雄 & 「SCOI2010」连续攻击游戏 - 二分图</a></h2><div class="post-info">Dec 31, 2017</div><div class="post-content"><p>两道二分图最大匹配的题，题目可以说是几乎一模一样，这里就只放一道吧 传送门：<a href="https://www.luogu.org/problemnew/show/2319" title="Luogu P2319 [HNOI2006]超级英雄" target="_blank" rel="noopener">Luogu P2319 [HNOI2006]超级英雄</a> <a href="https://www.luogu.org/problemnew/show/1640" title="Luogu P1640 [SCOI2010]连续攻击游戏" target="_blank" rel="noopener">Luogu P1640 [SCOI2010]连续攻击游戏</a></p></div><a class="read-more" href="/2017/12/31/Luogu-P2319-HNOI2006-超级英雄-P1640-SCOI2010-连续攻击游戏/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/12/31/Miller-Rabin素数测试/">Miller-Rabin素数测试</a></h2><div class="post-info">Dec 31, 2017</div><div class="post-content"><h3 id="基本算法"><a href="#基本算法" class="headerlink" title="基本算法"></a>基本算法</h3><p>Miller-Rabin素数测试其实是基于Fermat小定理的一种素数测试方法，其大致思想如下：
+<strong>Fermat小定理：</strong>对于素数p和任意正整数a，有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>a</mi><mrow><mi>p</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>≡</mo><mn>1</mn><mo>(</mo><mi>m</mi><mi>o</mi><mi>d</mi><mtext> </mtext><mi>p</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">a^{p-1} \equiv 1(mod\ p)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">a</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord scriptstyle uncramped"><span class="mord mathit">p</span><span class="mbin">−</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mrel">≡</span><span class="mord mathrm">1</span><span class="mopen">(</span><span class="mord mathit">m</span><span class="mord mathit">o</span><span class="mord mathit">d</span><span class="mord mspace"> </span><span class="mord mathit">p</span><span class="mclose">)</span></span></span></span>，反过来，如果满足<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>a</mi><mrow><mi>p</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>≡</mo><mn>1</mn><mo>(</mo><mi>m</mi><mi>o</mi><mi>d</mi><mtext> </mtext><mi>p</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">a^{p-1} \equiv 1(mod\ p)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">a</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord scriptstyle uncramped"><span class="mord mathit">p</span><span class="mbin">−</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mrel">≡</span><span class="mord mathrm">1</span><span class="mopen">(</span><span class="mord mathit">m</span><span class="mord mathit">o</span><span class="mord mathit">d</span><span class="mord mspace"> </span><span class="mord mathit">p</span><span class="mclose">)</span></span></span></span>，p就有很大概率是素数 
+<strong>Miller-Rabin：</strong>于是，我们不断选取基数b， 计算是否每次都有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>b</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>≡</mo><mn>1</mn><mo>(</mo><mi>m</mi><mi>o</mi><mi>d</mi><mtext> </mtext><mi>p</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">b^{n - 1} \equiv 1(mod\ p)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">b</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord scriptstyle uncramped"><span class="mord mathit">n</span><span class="mbin">−</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mrel">≡</span><span class="mord mathrm">1</span><span class="mopen">(</span><span class="mord mathit">m</span><span class="mord mathit">o</span><span class="mord mathit">d</span><span class="mord mspace"> </span><span class="mord mathit">p</span><span class="mclose">)</span></span></span></span>，
+若每次都成立则n是素数，若不成立则为合数 
+<strong>二次探测定理：</strong>如果p为奇素数，则<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>≡</mo><mn>1</mn><mo>(</mo><mi>m</mi><mi>o</mi><mi>d</mi><mtext> </mtext><mi>p</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">x^2 \equiv 1(mod\ p)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">x</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mrel">≡</span><span class="mord mathrm">1</span><span class="mopen">(</span><span class="mord mathit">m</span><span class="mord mathit">o</span><span class="mord mathit">d</span><span class="mord mspace"> </span><span class="mord mathit">p</span><span class="mclose">)</span></span></span></span>的解为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x = 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span><span class="mrel">=</span><span class="mord mathrm">1</span></span></span></span>或<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi><mo>=</mo><mi>p</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x = p - 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span><span class="mrel">=</span><span class="mord mathit">p</span><span class="mbin">−</span><span class="mord mathrm">1</span></span></span></span> 
+我们可以利用二次探测定理优化，那么算法就变成了：
+尽可能提取因子2，把n-1表示成<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mo>∗</mo><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">d * 2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">d</span><span class="mbin">∗</span><span class="mord"><span class="mord mathrm">2</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit">n</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>，如果n是一个素数，那么或者<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>a</mi><mi>d</mi></msup><mo>≡</mo><mn>1</mn><mo>(</mo><mi>m</mi><mi>o</mi><mi>d</mi><mtext> </mtext><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">a ^ d \equiv 1(mod\ n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.849108em;"></span><span class="strut bottom" style="height:1.099108em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">a</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit">d</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mrel">≡</span><span class="mord mathrm">1</span><span class="mopen">(</span><span class="mord mathit">m</span><span class="mord mathit">o</span><span class="mord mathit">d</span><span class="mord mspace"> </span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span>，或者存在某个i使得<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>a</mi><mrow><mi>d</mi><mo>+</mo><msup><mn>2</mn><mrow><mi>r</mi><mo>−</mo><mi>i</mi></mrow></msup></mrow></msup><mo>≡</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>(</mo><mi>m</mi><mi>o</mi><mi>d</mi><mtext> </mtext><mi>n</mi><mo>)</mo><mo>(</mo><mn>0</mn><mo>≤</mo><mi>i</mi><mo>≤</mo><mi>r</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">a^{d+2^{r - i}} \equiv n-1(mod\ n) (0\le i\le r-1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.9468599999999999em;"></span><span class="strut bottom" style="height:1.19686em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">a</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord scriptstyle uncramped"><span class="mord mathit">d</span><span class="mbin">+</span><span class="mord"><span class="mord mathrm">2</span><span class="vlist"><span style="top:-0.363em;margin-right:0.07142857142857144em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-scriptstyle scriptscriptstyle uncramped"><span class="mord scriptscriptstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">r</span><span class="mbin">−</span><span class="mord mathit">i</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mrel">≡</span><span class="mord mathit">n</span><span class="mbin">−</span><span class="mord mathrm">1</span><span class="mopen">(</span><span class="mord mathit">m</span><span class="mord mathit">o</span><span class="mord mathit">d</span><span class="mord mspace"> </span><span class="mord mathit">n</span><span class="mclose">)</span><span class="mopen">(</span><span class="mord mathrm">0</span><span class="mrel">≤</span><span class="mord mathit">i</span><span class="mrel">≤</span><span class="mord mathit" style="margin-right:0.02778em;">r</span><span class="mbin">−</span><span class="mord mathrm">1</span><span class="mclose">)</span></span></span></span></p></div><a class="read-more" href="/2017/12/31/Miller-Rabin素数测试/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/12/28/Luogu-P2055-ZJOI2009-假期的宿舍/">「ZJOI2009」假期的宿舍 - 二分图</a></h2><div class="post-info">Dec 28, 2017</div><div class="post-content"><h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><p>学校放假了 · · · · · · 有些同学回家了，而有些同学则有以前的好朋友来探访，那么住宿就是一个问题。比如 A 和 B 都是学校的学生，A 要回家，而 C 来看B，C 与 A 不认识。我们假设每个人只能睡和自己直接认识的人的床。那么一个解决方案就是 B 睡 A 的床而 C 睡 B 的床。而实际情况可能非常复杂，有的人可能认识好多在校学生，在校学生之间也不一定都互相认识。我们已知一共有 n 个人，并且知道其中每个人是不是本校学生，也知道每个本校学生是否回家。问是否存在一个方案使得所有不回家的本校学生和来看他们的其他人都有地方住。</p></div><a class="read-more" href="/2017/12/28/Luogu-P2055-ZJOI2009-假期的宿舍/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/12/28/Luogu-P1129-ZJOI2007-矩阵游戏/">「ZJOI2007」矩阵游戏 - 二分图</a></h2><div class="post-info">Dec 28, 2017</div><div class="post-content"><p>题目链接:<a href="https://www.luogu.org/problemnew/show/P1129" title="传送门" target="_blank" rel="noopener">传送门</a></p>
+<h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><p>小Q是一个非常聪明的孩子，除了国际象棋，他还很喜欢玩一个电脑益智游戏――矩阵游戏。矩阵游戏在一个N*N黑白方阵进行（如同国际象棋一般，只是颜色是随意的）。每次可以对该矩阵进行两种操作： 行交换操作：选择矩阵的任意两行，交换这两行（即交换对应格子的颜色） 列交换操作：选择矩阵的任意两列，交换这两列（即交换对应格子的颜色） 游戏的目标，即通过若干次操作，使得方阵的主对角线(左上角到右下角的连线)上的格子均为黑色。 对于某些关卡，小Q百思不得其解，以致他开始怀疑这些关卡是不是根本就是无解的！！于是小Q决定写一个程序来判断这些关卡是否有解。</p></div><a class="read-more" href="/2017/12/28/Luogu-P1129-ZJOI2007-矩阵游戏/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/11/06/【Day-4】11-6模拟赛-Summary/">【Day -4】11-6模拟赛 Summary</a></h2><div class="post-info">Nov 6, 2017</div><div class="post-content"><h2 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h2><p>今天分数还看得，但是排名掉到好后面去了。
+今天一上午基本上都在淦第一题，一道非常简单的树形Dp我因为设错了状态变得非常复杂，短短十行左右的dfs我硬生生地写了三四十行。。。
+不过幸好最后30min调出来了（我自己都不信），然后最后5min打了第二题40pts的暴力，以至于分数还是没有那么难看。
+这次考试其实检验出我的树形Dp的能力还是太弱了，这几天要多刷一点树形Dp的题，
+而且以前做题对题解的依赖太大，以后做题也要改掉这个习惯，加强独立思考的能力，这样考场上才能快速切掉比较简单的题。
+此外，今天时间安排也不是很合理，开始认为第一题好像有点思路就一直在做第一题，调到下考前30min才调出来，但是如果仔细想一下第二题的话会发现60pts的做法是很好想的，正解也其实就是在60pts的做法上用线段树进行了优化。 
+离NOIP只有4days了，这几天的模拟考难度好像会降低，所以这几次考试都要当成正式的NOIP，一套题如果没思路的话，一定先把暴力都打出来，不能想着暴力分太少就懒得去打，这样就会损失很多不该丢的分。</p></div><a class="read-more" href="/2017/11/06/【Day-4】11-6模拟赛-Summary/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/11/05/【Day-5】11-5模拟赛-Summary/">【Day -5】11-5模拟赛 Summary</a></h2><div class="post-info">Nov 5, 2017</div><div class="post-content"><h2 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h2><p>今天考得还不错，可能是因为题目比较简单，暴力分比较多的缘故。。。而且好像纪中出题我都考得不错。。。不过今天应该还是有很大的进步空间的。 今天T1一直理解错题意，本来想了40min后感觉好像想出来正解了，结果发现题意好像理解错了，但是也不知道到底哪种题意是正确的，于是就没管第一题了。T2的话Dp应该还是比较好想的，推了下式子后写了</p><p></p><div style="display: inline-block; border: 1px solid #000; "><strong>TeX parse error: Undefined control sequence \*</strong></div><p></p>的Dp，手动搞了几组数据，好像没有什么问题。然后去写T3暴力，发现可以通过枚举地儿棵树的根节点，然后比较<p></p><div style="display: inline-block; border: 1px solid #000; "><strong>TeX parse error: Undefined control sequence \[</strong></div><p></p>和<p></p><div style="display: inline-block; border: 1px solid #000; "><strong>TeX parse error: Undefined control sequence \[</strong></div><p></p>来判断两棵树是否相等，正确性不知道，但是复杂度好像是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><msup><mi>N</mi><mn>2</mn></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">O(N^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">)</span></span></span></span>的，当时抱着能拿多少分是多少分的心态，就交了这个暴力，结果加上特判No情况的5分居然总共拿了55分。最后二十分钟终于把T1题意理解清楚，但是已经没时间打了</div><a class="read-more" href="/2017/11/05/【Day-5】11-5模拟赛-Summary/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/11/04/ZJOI2007-棋盘制作-DP，悬线法求最大子矩形/">「ZJOI2007」棋盘制作 - DP + 悬线法</a></h2><div class="post-info">Nov 4, 2017</div><div class="post-content"></div><a class="read-more" href="/2017/11/04/ZJOI2007-棋盘制作-DP，悬线法求最大子矩形/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/11/04/洛谷P1196-银河英雄传说-带权并查集/">「Luogu1196」银河英雄传说 - 带权并查集</a></h2><div class="post-info">Nov 4, 2017</div><div class="post-content"><h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><p>太长了懒得放</p></div><a class="read-more" href="/2017/11/04/洛谷P1196-银河英雄传说-带权并查集/">...more</a></article></li></ul></main><footer><ul class="pagination"><li class="link"><a href="/page/37/"><i class="icon icon-arror-left"></i></a></li><li class="other"><a href="/page/36"><span>36</span></a></li><li class="other"><a href="/page/37/"><span>37</span></a></li><li class="current"><a href="/page/38/index.html"><span>38</span></a></li><li class="other"><a href="/page/39/"><span>39</span></a></li><li class="other"><a href="/page/40"><span>40</span></a></li><li class="link"><a href="/page/39/"><i class="icon icon-arror-right"></i></a></li></ul><div class="copyright"><p>© 2017 - 2020 靡不有初，鲜克有终</p><p>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>, theme by <a href="https://github.com/hk-cnyali" target="_blank">hk_cnyali</a>.</p></div><script type="text/javascript" src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script><script>// Popup Window;
+var isfetched = false;
+var isXml = true;
+// Search DB path;
+var search_path = "search.json";
+if (search_path.length === 0) {
+  search_path = "search.xml";
+} else if (/json$/i.test(search_path)) {
+  isXml = false;
+}
+var path = "/" + search_path;
+// monitor main search box;
+// console.log(path);
+
+var onPopupClose = function (e) {
+  // console.log("onPopupClose");
+  $('.popup').hide();
+  $('#local-search-input').val('');
+  $('.search-result-list').remove();
+  $('#no-result').remove();
+  $(".local-search-pop-overlay").remove();
+  $('body').css('overflow', '');
+}
+
+function proceedsearch() {
+  // console.log("proceed_search");
+  $("body")
+    .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+    .css('overflow', 'hidden');
+  $('.search-popup-overlay').click(onPopupClose);
+  $('.popup').toggle();
+  var $localSearchInput = $('#local-search-input');
+  $localSearchInput.attr("autocapitalize", "none");
+  $localSearchInput.attr("autocorrect", "off");
+  $localSearchInput.focus();
+}
+
+// search function;
+var searchFunc = function(path, search_id, content_id) {
+  // console.log("searchFunc");
+  'use strict';
+
+  // start loading animation
+  $("body")
+    .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+      '<div id="search-loading-icon">' +
+      '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+      '</div>' +
+      '</div>')
+    .css('overflow', 'hidden');
+  $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+  // console.log("start_loading_animation");
+
+  // console.log(path);
+  // console.log(isXml);
+  // console.log(document.getElementById(search_id));
+
+  $.ajax({
+    url: path,
+    dataType: isXml ? "xml" : "json",
+    async: true,
+    error: function(res) {
+      // console.log("error!");
+    }, 
+    success: function(res) {
+      // console.log("success!");
+      // get the contents from search data
+      isfetched = true;
+      $('.popup').detach().appendTo('.header');
+      var datas = isXml ? $("entry", res).map(function() {
+        return {
+          title: $("title", this).text(),
+          content: $("content",this).text(),
+          url: $("url" , this).text()
+        };
+      }).get() : res;
+      var input = document.getElementById(search_id);
+      // console.log("input = " + input);
+      var resultContent = document.getElementById(content_id);
+      // console.log("resultContent = " + resultContent);
+      var inputEventFunction = function() {
+        var searchText = input.value.trim().toLowerCase();
+        var keywords = searchText.split(/[\s\-]+/);
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        var resultItems = [];
+        if (searchText.length > 0) {
+          // perform local searching
+          datas.forEach(function(data) {
+            var isMatch = false;
+            var hitCount = 0;
+            var searchTextCount = 0;
+            var title = data.title.trim();
+            var titleInLowerCase = title.toLowerCase();
+            var content = data.content.trim().replace(/<[^>]+>/g,"");
+            var contentInLowerCase = content.toLowerCase();
+            var articleUrl = decodeURIComponent(data.url);
+            var indexOfTitle = [];
+            var indexOfContent = [];
+            // only match articles with not empty titles
+            if(title != '') {
+              keywords.forEach(function(keyword) {
+                function getIndexByWord(word, text, caseSensitive) {
+                  var wordLen = word.length;
+                  if (wordLen === 0) {
+                    return [];
+                  }
+                  var startPosition = 0, position = [], index = [];
+                  if (!caseSensitive) {
+                    text = text.toLowerCase();
+                    word = word.toLowerCase();
+                  }
+                  while ((position = text.indexOf(word, startPosition)) > -1) {
+                    index.push({position: position, word: word});
+                    startPosition = position + wordLen;
+                  }
+                  return index;
+                }
+
+                indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+              });
+              if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                isMatch = true;
+                hitCount = indexOfTitle.length + indexOfContent.length;
+              }
+            }
+
+            // show search results
+
+            if (isMatch) {
+              // sort index by position of keyword
+
+              [indexOfTitle, indexOfContent].forEach(function (index) {
+                index.sort(function (itemLeft, itemRight) {
+                  if (itemRight.position !== itemLeft.position) {
+                    return itemRight.position - itemLeft.position;
+                  } else {
+                    return itemLeft.word.length - itemRight.word.length;
+                  }
+                });
+              });
+
+              // merge hits into slices
+
+              function mergeIntoSlice(text, start, end, index) {
+                var item = index[index.length - 1];
+                var position = item.position;
+                var word = item.word;
+                var hits = [];
+                var searchTextCountInSlice = 0;
+                while (position + word.length <= end && index.length != 0) {
+                  if (word === searchText) {
+                    searchTextCountInSlice++;
+                  }
+                  hits.push({position: position, length: word.length});
+                  var wordEnd = position + word.length;
+
+                  // move to next position of hit
+
+                  index.pop();
+                  while (index.length != 0) {
+                    item = index[index.length - 1];
+                    position = item.position;
+                    word = item.word;
+                    if (wordEnd > position) {
+                      index.pop();
+                    } else {
+                      break;
+                    }
+                  }
+                }
+                searchTextCount += searchTextCountInSlice;
+                return {
+                  hits: hits,
+                  start: start,
+                  end: end,
+                  searchTextCount: searchTextCountInSlice
+                };
+              }
+
+              var slicesOfTitle = [];
+              if (indexOfTitle.length != 0) {
+                slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+              }
+
+              var slicesOfContent = [];
+              while (indexOfContent.length != 0) {
+                var item = indexOfContent[indexOfContent.length - 1];
+                var position = item.position;
+                var word = item.word;
+                // cut out 100 characters
+                var start = position - 20;
+                var end = position + 80;
+                if(start < 0){
+                  start = 0;
+                }
+                if (end < position + word.length) {
+                  end = position + word.length;
+                }
+                if(end > content.length){
+                  end = content.length;
+                }
+                slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+              }
+
+              // sort slices in content by search text's count and hits' count
+
+              slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                  return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                  return sliceRight.hits.length - sliceLeft.hits.length;
+                } else {
+                  return sliceLeft.start - sliceRight.start;
+                }
+              });
+
+              // select top N slices in content
+
+              var upperBound = parseInt("1");
+              if (upperBound >= 0) {
+                slicesOfContent = slicesOfContent.slice(0, upperBound);
+              }
+              // console.log(upperBound);
+
+              // highlight title and content
+
+              function highlightKeyword(text, slice) {
+                var result = '';
+                var prevEnd = slice.start;
+                slice.hits.forEach(function (hit) {
+                  result += text.substring(prevEnd, hit.position);
+                  var end = hit.position + hit.length;
+                  result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                  prevEnd = end;
+                });
+                result += text.substring(prevEnd, slice.end);
+                return result;
+              }
+
+              var resultItem = '';
+
+              if (slicesOfTitle.length != 0) {
+                resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+              } else {
+                resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+              }
+
+              slicesOfContent.forEach(function (slice) {
+                resultItem += "<a>" +
+                  "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                  "...</p>" + "</a>";
+              });
+
+              resultItem += "</li>";
+              resultItems.push({
+                item: resultItem,
+                searchTextCount: searchTextCount,
+                hitCount: hitCount,
+                id: resultItems.length
+              });
+            }
+          })
+        };
+        if (keywords.length === 1 && keywords[0] === "") {
+          resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+        } else if (resultItems.length === 0) {
+          resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+        } else {
+          resultItems.sort(function (resultLeft, resultRight) {
+            if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+              return resultRight.searchTextCount - resultLeft.searchTextCount;
+            } else if (resultLeft.hitCount !== resultRight.hitCount) {
+              return resultRight.hitCount - resultLeft.hitCount;
+            } else {
+              return resultRight.id - resultLeft.id;
+            }
+          });
+          var searchResultList = '<ul class=\"search-result-list\">';
+          resultItems.forEach(function (result) {
+            searchResultList += result.item;
+          })
+          searchResultList += "</ul>";
+          resultContent.innerHTML = searchResultList;
+        }
+      }
+
+      if ('auto' === "auto") {
+        input.addEventListener('input', inputEventFunction);
+      } else {
+        $('.search-icon').click(inputEventFunction);
+        input.addEventListener('keypress', function (event) {
+          if (event.keyCode === 13) {
+            inputEventFunction();
+          }
+        });
+      }
+
+      // remove loading animation
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+
+      proceedsearch();
+    }
+  });
+}
+
+// handle and trigger popup window;
+$('.popup-trigger').click(function(e) {
+  e.stopPropagation();
+  if (isfetched === false) {
+    searchFunc(path, 'local-search-input', 'local-search-result');
+  } else {
+    proceedsearch();
+  };
+});
+
+$('.popup-btn-close').click(onPopupClose);
+$('.popup').click(function(e){
+  // console.log("popup.click");
+  e.stopPropagation();
+});
+$(document).on('keyup', function (event) {
+  // console.log("keyup");
+  var shouldDismissSearchPopup = event.which === 27 && $('.search-popup').is(':visible');
+  if (shouldDismissSearchPopup) {
+    onPopupClose();
+  }
+});</script></footer></div><script>var wrap = document.getElementById('wrap');
+window.onload = function () {
+  wrap.className += ' done';
+}
+</script></body></html>

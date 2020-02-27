@@ -1,0 +1,419 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 后缀自动机学习笔记 | hk_cnyali's Blog</title><meta name="description" content="后缀自动机学习笔记 - hk_cnyali"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.jpg"><link rel="stylesheet" href="https:////cdn.staticfile.org/KaTeX/0.7.1/katex.min.css"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css"><link rel="search" type="application/opensearchdescription+xml" href="/atom.xml" title="hk_cnyali's Blog"><link rel="stylesheet" href="/css/style.css"><link rel="search" type="application/opensearchdescription+xml" href="http://hk-cnyali.com/atom.xml" title="hk_cnyali's Blog"></head><body><div class="wrapper" id="wrap"><header class="header"><h1 class="title">hk_cnyali's Blog</h1><section><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">Home</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">Archives</a></li><li class="nav-list-item"><a class="nav-list-link" href="/About-Me/" target="_self">About</a></li><li class="nav-list-item"><a class="nav-list-link" href="/Tags/" target="_self">Tags</a></li><li class="nav-list-item"><a class="nav-list-link" href="/Debug/" target="_self">Debug</a></li><li class="nav-list-item"><a class="nav-list-link" href="/Friendly-Links/" target="_self">Friendly-Links</a></li><li class="nav-list-item"><a href="javascript:;" class="popup-trigger"> Search </a></li><div class="site-search">
+<div class="popup search-popup local-search-popup" id="search-popup">
+<div class="local-search-header clearfix">
+<span class="search-icon">
+<i class="fa fa-search"></i>
+</span>
+<span class="popup-btn-close">
+<i class="fa fa-times-circle"></i>
+</span>
+<div class="local-search-input-wrapper">
+<input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+</div>
+</div>
+<div id="local-search-result"></div>
+</div>
+</div></ul></section></header><main class="container"><aside id="sidebar" class="sidebar"> 
+<div class="sidebar-inner">  
+<ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active">文章目录</li></ul><div class="post-toc">
+<div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#UPD-20-1-31"><span class="nav-number">1.</span> <span class="nav-text">UPD 20.1.31</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Brief-Introduction"><span class="nav-number">2.</span> <span class="nav-text">Brief Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些定义"><span class="nav-number">3.</span> <span class="nav-text">一些定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#节点-状态"><span class="nav-number">3.1.</span> <span class="nav-text">节点/状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#right-endpos集合"><span class="nav-number">3.2.</span> <span class="nav-text">right/endpos集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fa-parent-suffix-link"><span class="nav-number">3.3.</span> <span class="nav-text">fa/parent/suffix link</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#maxlen"><span class="nav-number">3.4.</span> <span class="nav-text">maxlen</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造"><span class="nav-number">4.</span> <span class="nav-text">构造</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Code"><span class="nav-number">4.1.</span> <span class="nav-text">Code</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些简单的性质"><span class="nav-number">5.</span> <span class="nav-text">一些简单的性质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#right集合"><span class="nav-number">5.1.</span> <span class="nav-text">right集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#匹配"><span class="nav-number">5.2.</span> <span class="nav-text">匹配</span></a></li></ol></li></ol></div>
+</div></div>
+</aside><div class="post"><article class="post-block"><h1 class="post-title">后缀自动机学习笔记</h1><div class="post-info">Posted at 19-3-5 23:43, Updated at 20-2-1 19:10</div><div class="post-content"><p>几次尝试学这个都没太搞懂，过几天就忘</p>
+<p>今天看了一个讲得超级好的课件之后才真正理解SAM</p>
+<p>趁热写一点笔记，省得以后又全忘了</p>
+<p>可能大部分都是从ppt里搬来的吧。。。</p>
+<a id="more"></a>
+<h2 id="UPD-20-1-31"><a href="#UPD-20-1-31" class="headerlink" title="UPD 20.1.31"></a>UPD 20.1.31</h2><p>今天复习了SAM</p>
+<blockquote>
+<p><a href="https://www.cnblogs.com/cjyyb/p/8446205.html" target="_blank" rel="noopener">yyb的这篇文章</a> 还写得挺好的</p>
+</blockquote>
+<p>再举一个例子理解一下克隆节点的过程：</p>
+<p><img src="/images/20-1-29-1.jpg" alt="20-1-29-1"></p>
+<hr>
+<blockquote>
+<p>注：以下的内容（主要是定义）不一定非常严谨，但比较通俗易懂。而且大多数也只是自己对SAM的一点点感性理解，依旧不适合初学者阅读。。。</p>
+<p>非常严谨的东西可以看<a href="https://www.cnblogs.com/zjp-shadow/p/9218214.html" target="_blank" rel="noopener">这里</a>或<a href="https://oi.men.ci/suffix-automaton-notes/" target="_blank" rel="noopener">这里</a></p>
+</blockquote>
+<h2 id="Brief-Introduction"><a href="#Brief-Introduction" class="headerlink" title="Brief Introduction"></a>Brief Introduction</h2><p>自动机，通俗来说，就是一张带有根和转移边的有向图，每条转移边上有一个字符，一个点出发的所有转移边上的字符必须两两不相同</p>
+<p>考虑自动机上一条由根出发的由节点和转移边构成的有向路径，把路径的转移边上的字符按顺序拼接起来可以得到一个字符串<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.05764em;">S</span></span></span></span> ，那么我们就说这条路径的终点（这是一个节点）接受字符串<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.05764em;">S</span></span></span></span></p>
+<p>如果一个自动机上存在一条由根出发的有向路径使得转移边上的字符按顺序拼接起来可以得到，那么我们就说<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.05764em;">S</span></span></span></span>被这个自动机接受</p>
+<p>后缀自动机就是能接受某个串的所有后缀/子串的自动机</p>
+<h2 id="一些定义"><a href="#一些定义" class="headerlink" title="一些定义"></a>一些定义</h2><h3 id="节点-状态"><a href="#节点-状态" class="headerlink" title="节点/状态"></a>节点/状态</h3><p>后缀自动机一个节点/状态代表这个节点能接受的串的集合，一个节点内的所有串互相存在后缀关系（一个是另一个的后缀），且长度连续</p>
+<h3 id="right-endpos集合"><a href="#right-endpos集合" class="headerlink" title="right/endpos集合"></a>right/endpos集合</h3><p>一个子串在原串中所有结束位置构成的集合，SAM一个节点中所有子串的<code>right集合</code>相同</p>
+<h3 id="fa-parent-suffix-link"><a href="#fa-parent-suffix-link" class="headerlink" title="fa/parent/suffix link"></a>fa/parent/suffix link</h3><p>SAM中一个节点所包含的所有子串可以看成是由最长的那个串不断删掉第一个字符构成的，但是有可能最短的那个串长度不为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span></span></span></span>。那么这个<code>fa</code>就指向<code>当前节点包含的最短的串删掉第一个字符</code>这个串所在的节点</p>
+<p>显然，从一个节点不断跳<code>fa</code>，就能遍历到所有它的所有后缀</p>
+<p>并且，这样的后缀链接形成的<code>parent树</code>就是反串的后缀树</p>
+<h3 id="maxlen"><a href="#maxlen" class="headerlink" title="maxlen"></a>maxlen</h3><p>一个节点所包含的最长子串的长度</p>
+<h2 id="构造"><a href="#构造" class="headerlink" title="构造"></a>构造</h2><blockquote>
+<p>这里是一些关于构造的感性认识</p>
+</blockquote>
+<p>使用增量法进行构造，<strong>每次把之前存在的所有后缀都添上一个转移，转移到一个新的节点<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi><mi>o</mi><mi>w</mi></mrow><annotation encoding="application/x-tex">now</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">n</span><span class="mord mathit">o</span><span class="mord mathit" style="margin-right:0.02691em;">w</span></span></span></span></strong></p>
+<blockquote>
+<p>其实上面一句话就把构造过程讲完了，下面只是一些细节</p>
+</blockquote>
+<p>而之前存在的所有后缀显然就是上一次添加完的串的所有后缀，于是可以不断跳上一次添加的新节点的<code>fa</code>，添加它们到<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi><mi>o</mi><mi>w</mi></mrow><annotation encoding="application/x-tex">now</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">n</span><span class="mord mathit">o</span><span class="mord mathit" style="margin-right:0.02691em;">w</span></span></span></span>的转移</p>
+<p>但是，有可能在跳<code>fa</code>的过程中，某个状态转移向当前字符的转移边之前已经出现（显然这种情况只会连续一段地出现，我们先只考虑最先出现的那个状态<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>r</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">pre</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="base textstyle uncramped"><span class="mord mathit">p</span><span class="mord mathit" style="margin-right:0.02778em;">r</span><span class="mord mathit">e</span></span></span></span>）</p>
+<ul>
+<li>如果<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>r</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">pre</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="base textstyle uncramped"><span class="mord mathit">p</span><span class="mord mathit" style="margin-right:0.02778em;">r</span><span class="mord mathit">e</span></span></span></span>的<code>maxlen</code>加上<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">1</span></span></span></span>就等于转移到的节点（设为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span>）的<code>maxlen</code>，则说明已经存在了连续一段的所有后缀了。也就是说，我们找到了一个能不重不漏地接受当前串所有后缀的节点集合。此时我们只需要把的<code>fa[now]</code>指向<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span>即可</li>
+<li>否则，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span>的<code>maxlen</code>大于<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>r</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">pre</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="base textstyle uncramped"><span class="mord mathit">p</span><span class="mord mathit" style="margin-right:0.02778em;">r</span><span class="mord mathit">e</span></span></span></span>的<code>maxlen + 1</code>，这说明<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span>这个节点能接受的串太多了，而我们当前需要添加转移的只有小于等于<code>maxlen + 1</code>的那一部分。于是我们可以把<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span>这个点拆分，以<code>maxlen + 1</code>为界，把长度小于等于<code>maxlen + 1</code>的部分拆出来形成一个新点<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.03588em;">y</span></span></span></span>。那么<code>fa[now]</code>和<code>fa[x]</code>都要等于<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.03588em;">y</span></span></span></span>。并且<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>r</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">pre</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="base textstyle uncramped"><span class="mord mathit">p</span><span class="mord mathit" style="margin-right:0.02778em;">r</span><span class="mord mathit">e</span></span></span></span>的所有祖先原来有转移向<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span>的，现在都要改成向<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.03588em;">y</span></span></span></span>转移</li>
+</ul>
+<p>时间复杂度，状态数，转移边数均可以被证明是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span>级别的</p>
+<blockquote>
+<p>状态数<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>≤</mo><mn>2</mn><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">\le 2\times n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.78041em;vertical-align:-0.13597em;"></span><span class="base textstyle uncramped"><span class="mrel">≤</span><span class="mord mathrm">2</span><span class="mbin">×</span><span class="mord mathit">n</span></span></span></span>， 转移边数<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>≤</mo><mn>3</mn><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">\le 3 \times n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.78041em;vertical-align:-0.13597em;"></span><span class="base textstyle uncramped"><span class="mrel">≤</span><span class="mord mathrm">3</span><span class="mbin">×</span><span class="mord mathit">n</span></span></span></span></p>
+</blockquote>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> node_cnt = <span class="number">1</span>, last = <span class="number">1</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">info</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> ch[<span class="number">30</span>], fa, maxlen, cnt;</span><br><span class="line">&#125; node[Maxn &lt;&lt; <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">new_node</span> <span class="params">(<span class="keyword">int</span> pre)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	++node_cnt;</span><br><span class="line">	node[node_cnt].maxlen = node[pre].maxlen + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">return</span> node_cnt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">extend</span> <span class="params">(<span class="keyword">int</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> now = new_node (last), pre = last; last = now;</span><br><span class="line">	node[node_cnt].cnt = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (; pre &amp;&amp; !node[pre].ch[c]; pre = node[pre].fa) node[pre].ch[c] = now;</span><br><span class="line">	<span class="keyword">if</span> (!pre) node[now].fa = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> x = node[pre].ch[c];</span><br><span class="line">		<span class="keyword">if</span> (node[x].maxlen == node[pre].maxlen + <span class="number">1</span>) node[now].fa = x;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> y = ++node_cnt; </span><br><span class="line">			node[y] = node[x], node[y].maxlen = node[pre].maxlen + <span class="number">1</span>, node[y].cnt = <span class="number">0</span>;</span><br><span class="line">			node[x].fa = node[now].fa = y;</span><br><span class="line">			<span class="keyword">for</span> (; node[pre].ch[c] == x; pre = node[pre].fa) node[pre].ch[c] = y;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="一些简单的性质"><a href="#一些简单的性质" class="headerlink" title="一些简单的性质"></a>一些简单的性质</h2><h3 id="right集合"><a href="#right集合" class="headerlink" title="right集合"></a>right集合</h3><blockquote>
+<p>为了方便描述，我们称<code>传统节点</code>为每次添加节点时像<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi><mi>o</mi><mi>w</mi></mrow><annotation encoding="application/x-tex">now</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">n</span><span class="mord mathit">o</span><span class="mord mathit" style="margin-right:0.02691em;">w</span></span></span></span>这样的节点，称<code>克隆节点</code>为每次通过拆分出来的，像<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.03588em;">y</span></span></span></span>这样的节点</p>
+</blockquote>
+<p>后缀自动机的状态<code>right集合</code>大小是其在<code>parent树</code>中子树<code>传统节点</code>的数量，代表这个状态所表示的子串出现次数</p>
+<p>原因很显然</p>
+<h3 id="匹配"><a href="#匹配" class="headerlink" title="匹配"></a>匹配</h3><p>后缀自动机上的匹配和KMP也差不多</p>
+<p>因为KMP的一个状态是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.05764em;">S</span></span></span></span>的一个前缀，所以它可以匹配到最长的<code>为S的前缀</code>的后缀</p>
+<p>而后缀自动机的一个状态是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.05764em;">S</span></span></span></span>的一个子串，所以它可以对<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">T</span></span></span></span>的每个前缀求出最长的<code>为S的子串</code>的后缀</p>
+<p>方法和AC自动机上跳<code>fail</code>是几乎一模一样的，只是这里变成跳<code>fa</code>。</p>
+<p>具体来说，考虑每次新添加进来<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">T</span></span></span></span>中的一个字符<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi></mrow><annotation encoding="application/x-tex">c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">c</span></span></span></span>，如果当前状态有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi></mrow><annotation encoding="application/x-tex">c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">c</span></span></span></span>的转移边则匹配成功；否则不断跳<code>fa</code>直到匹配上或者跳到根节点</p>
+<hr>
+<p>还有一些具体的应用还是单独再写一篇吧</p>
+<p>这篇文章（可能会？）持续更新</p>
+</div><div class="article-meta"><div class="tags"><i class="icon icon-tag"></i><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/后缀自动机/">后缀自动机</a><span class="tag-list-count">21</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字符串/">字符串</a><span class="tag-list-count">33</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a><span class="tag-list-count">110</span></li></ul></div></div></article></div></main><footer><div class="paginator"><a class="prev" href="/2019/03/06/「2017-山东一轮集训-Day5」字符串-后缀自动机-动态规划/"><span>「2017 山东一轮集训 Day5」字符串 - 后缀自动机 + 动态规划</span></a><a class="next" href="/2019/03/05/「USACO19JAN」Platinum-Solution/"><span>「USACO19JAN」Platinum Solution</span></a></div><div class="v" id="comments"> </div><script src="//cdn.jun6.net/av-min.js"></script>
+<script src="//cdn.jun6.net/Valine.min.js"></script>
+<script type="text/javascript"> new Valine({ el: '#comments' , verify: "true", notify: "true", appId: "2wXHHL7KBB6DpOQTCnkO5zIA-gzGzoHsz", appKey: "dJgClhnm2rklwPRlXrTRdXsz", placeholder: "快来评论吧~~~（有人@你时会有邮件提醒，建议填写真实邮箱噢）", avatar:"mm", pageSize:"6" || 10 }); </script><link rel="stylesheet" href="/css/partial/valine.css"><script src="//libs.baidu.com/jquery/2.1.4/jquery.min.js"></script><script>$(document).ready(function(){
+    $("#comments").on('click', 'span.vat',function(){
+        $(this).parent('div.vmeta').next("div.vcontent").after($("div.vwrap"));
+        $('textarea#veditor').focus();
+    })
+})</script><div class="copyright"><p>© 2017 - 2020 靡不有初，鲜克有终</p><p>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>, theme by <a href="https://github.com/hk-cnyali" target="_blank">hk_cnyali</a>.</p></div><script type="text/javascript" src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script><script>// Popup Window;
+var isfetched = false;
+var isXml = true;
+// Search DB path;
+var search_path = "search.json";
+if (search_path.length === 0) {
+  search_path = "search.xml";
+} else if (/json$/i.test(search_path)) {
+  isXml = false;
+}
+var path = "/" + search_path;
+// monitor main search box;
+// console.log(path);
+
+var onPopupClose = function (e) {
+  // console.log("onPopupClose");
+  $('.popup').hide();
+  $('#local-search-input').val('');
+  $('.search-result-list').remove();
+  $('#no-result').remove();
+  $(".local-search-pop-overlay").remove();
+  $('body').css('overflow', '');
+}
+
+function proceedsearch() {
+  // console.log("proceed_search");
+  $("body")
+    .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+    .css('overflow', 'hidden');
+  $('.search-popup-overlay').click(onPopupClose);
+  $('.popup').toggle();
+  var $localSearchInput = $('#local-search-input');
+  $localSearchInput.attr("autocapitalize", "none");
+  $localSearchInput.attr("autocorrect", "off");
+  $localSearchInput.focus();
+}
+
+// search function;
+var searchFunc = function(path, search_id, content_id) {
+  // console.log("searchFunc");
+  'use strict';
+
+  // start loading animation
+  $("body")
+    .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+      '<div id="search-loading-icon">' +
+      '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+      '</div>' +
+      '</div>')
+    .css('overflow', 'hidden');
+  $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+  // console.log("start_loading_animation");
+
+  // console.log(path);
+  // console.log(isXml);
+  // console.log(document.getElementById(search_id));
+
+  $.ajax({
+    url: path,
+    dataType: isXml ? "xml" : "json",
+    async: true,
+    error: function(res) {
+      // console.log("error!");
+    }, 
+    success: function(res) {
+      // console.log("success!");
+      // get the contents from search data
+      isfetched = true;
+      $('.popup').detach().appendTo('.header');
+      var datas = isXml ? $("entry", res).map(function() {
+        return {
+          title: $("title", this).text(),
+          content: $("content",this).text(),
+          url: $("url" , this).text()
+        };
+      }).get() : res;
+      var input = document.getElementById(search_id);
+      // console.log("input = " + input);
+      var resultContent = document.getElementById(content_id);
+      // console.log("resultContent = " + resultContent);
+      var inputEventFunction = function() {
+        var searchText = input.value.trim().toLowerCase();
+        var keywords = searchText.split(/[\s\-]+/);
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        var resultItems = [];
+        if (searchText.length > 0) {
+          // perform local searching
+          datas.forEach(function(data) {
+            var isMatch = false;
+            var hitCount = 0;
+            var searchTextCount = 0;
+            var title = data.title.trim();
+            var titleInLowerCase = title.toLowerCase();
+            var content = data.content.trim().replace(/<[^>]+>/g,"");
+            var contentInLowerCase = content.toLowerCase();
+            var articleUrl = decodeURIComponent(data.url);
+            var indexOfTitle = [];
+            var indexOfContent = [];
+            // only match articles with not empty titles
+            if(title != '') {
+              keywords.forEach(function(keyword) {
+                function getIndexByWord(word, text, caseSensitive) {
+                  var wordLen = word.length;
+                  if (wordLen === 0) {
+                    return [];
+                  }
+                  var startPosition = 0, position = [], index = [];
+                  if (!caseSensitive) {
+                    text = text.toLowerCase();
+                    word = word.toLowerCase();
+                  }
+                  while ((position = text.indexOf(word, startPosition)) > -1) {
+                    index.push({position: position, word: word});
+                    startPosition = position + wordLen;
+                  }
+                  return index;
+                }
+
+                indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+              });
+              if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                isMatch = true;
+                hitCount = indexOfTitle.length + indexOfContent.length;
+              }
+            }
+
+            // show search results
+
+            if (isMatch) {
+              // sort index by position of keyword
+
+              [indexOfTitle, indexOfContent].forEach(function (index) {
+                index.sort(function (itemLeft, itemRight) {
+                  if (itemRight.position !== itemLeft.position) {
+                    return itemRight.position - itemLeft.position;
+                  } else {
+                    return itemLeft.word.length - itemRight.word.length;
+                  }
+                });
+              });
+
+              // merge hits into slices
+
+              function mergeIntoSlice(text, start, end, index) {
+                var item = index[index.length - 1];
+                var position = item.position;
+                var word = item.word;
+                var hits = [];
+                var searchTextCountInSlice = 0;
+                while (position + word.length <= end && index.length != 0) {
+                  if (word === searchText) {
+                    searchTextCountInSlice++;
+                  }
+                  hits.push({position: position, length: word.length});
+                  var wordEnd = position + word.length;
+
+                  // move to next position of hit
+
+                  index.pop();
+                  while (index.length != 0) {
+                    item = index[index.length - 1];
+                    position = item.position;
+                    word = item.word;
+                    if (wordEnd > position) {
+                      index.pop();
+                    } else {
+                      break;
+                    }
+                  }
+                }
+                searchTextCount += searchTextCountInSlice;
+                return {
+                  hits: hits,
+                  start: start,
+                  end: end,
+                  searchTextCount: searchTextCountInSlice
+                };
+              }
+
+              var slicesOfTitle = [];
+              if (indexOfTitle.length != 0) {
+                slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+              }
+
+              var slicesOfContent = [];
+              while (indexOfContent.length != 0) {
+                var item = indexOfContent[indexOfContent.length - 1];
+                var position = item.position;
+                var word = item.word;
+                // cut out 100 characters
+                var start = position - 20;
+                var end = position + 80;
+                if(start < 0){
+                  start = 0;
+                }
+                if (end < position + word.length) {
+                  end = position + word.length;
+                }
+                if(end > content.length){
+                  end = content.length;
+                }
+                slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+              }
+
+              // sort slices in content by search text's count and hits' count
+
+              slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                  return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                  return sliceRight.hits.length - sliceLeft.hits.length;
+                } else {
+                  return sliceLeft.start - sliceRight.start;
+                }
+              });
+
+              // select top N slices in content
+
+              var upperBound = parseInt("1");
+              if (upperBound >= 0) {
+                slicesOfContent = slicesOfContent.slice(0, upperBound);
+              }
+              // console.log(upperBound);
+
+              // highlight title and content
+
+              function highlightKeyword(text, slice) {
+                var result = '';
+                var prevEnd = slice.start;
+                slice.hits.forEach(function (hit) {
+                  result += text.substring(prevEnd, hit.position);
+                  var end = hit.position + hit.length;
+                  result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                  prevEnd = end;
+                });
+                result += text.substring(prevEnd, slice.end);
+                return result;
+              }
+
+              var resultItem = '';
+
+              if (slicesOfTitle.length != 0) {
+                resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+              } else {
+                resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+              }
+
+              slicesOfContent.forEach(function (slice) {
+                resultItem += "<a>" +
+                  "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                  "...</p>" + "</a>";
+              });
+
+              resultItem += "</li>";
+              resultItems.push({
+                item: resultItem,
+                searchTextCount: searchTextCount,
+                hitCount: hitCount,
+                id: resultItems.length
+              });
+            }
+          })
+        };
+        if (keywords.length === 1 && keywords[0] === "") {
+          resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+        } else if (resultItems.length === 0) {
+          resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+        } else {
+          resultItems.sort(function (resultLeft, resultRight) {
+            if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+              return resultRight.searchTextCount - resultLeft.searchTextCount;
+            } else if (resultLeft.hitCount !== resultRight.hitCount) {
+              return resultRight.hitCount - resultLeft.hitCount;
+            } else {
+              return resultRight.id - resultLeft.id;
+            }
+          });
+          var searchResultList = '<ul class=\"search-result-list\">';
+          resultItems.forEach(function (result) {
+            searchResultList += result.item;
+          })
+          searchResultList += "</ul>";
+          resultContent.innerHTML = searchResultList;
+        }
+      }
+
+      if ('auto' === "auto") {
+        input.addEventListener('input', inputEventFunction);
+      } else {
+        $('.search-icon').click(inputEventFunction);
+        input.addEventListener('keypress', function (event) {
+          if (event.keyCode === 13) {
+            inputEventFunction();
+          }
+        });
+      }
+
+      // remove loading animation
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+
+      proceedsearch();
+    }
+  });
+}
+
+// handle and trigger popup window;
+$('.popup-trigger').click(function(e) {
+  e.stopPropagation();
+  if (isfetched === false) {
+    searchFunc(path, 'local-search-input', 'local-search-result');
+  } else {
+    proceedsearch();
+  };
+});
+
+$('.popup-btn-close').click(onPopupClose);
+$('.popup').click(function(e){
+  // console.log("popup.click");
+  e.stopPropagation();
+});
+$(document).on('keyup', function (event) {
+  // console.log("keyup");
+  var shouldDismissSearchPopup = event.which === 27 && $('.search-popup').is(':visible');
+  if (shouldDismissSearchPopup) {
+    onPopupClose();
+  }
+});</script></footer></div><script>var wrap = document.getElementById('wrap');
+window.onload = function () {
+  wrap.className += ' done';
+}
+</script></body></html>

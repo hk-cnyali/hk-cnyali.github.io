@@ -1,0 +1,356 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> hk_cnyali's Blog</title><meta name="description" content="A Blog Powered By Hexo"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.jpg"><link rel="stylesheet" href="https:////cdn.staticfile.org/KaTeX/0.7.1/katex.min.css"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css"><link rel="search" type="application/opensearchdescription+xml" href="/atom.xml" title="hk_cnyali's Blog"><link rel="stylesheet" href="/css/style.css"><link rel="search" type="application/opensearchdescription+xml" href="http://hk-cnyali.com/atom.xml" title="hk_cnyali's Blog"></head><body><div class="wrapper" id="wrap"><header class="header"><h1 class="title">hk_cnyali's Blog</h1><section><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">Home</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">Archives</a></li><li class="nav-list-item"><a class="nav-list-link" href="/About-Me/" target="_self">About</a></li><li class="nav-list-item"><a class="nav-list-link" href="/Tags/" target="_self">Tags</a></li><li class="nav-list-item"><a class="nav-list-link" href="/Debug/" target="_self">Debug</a></li><li class="nav-list-item"><a class="nav-list-link" href="/Friendly-Links/" target="_self">Friendly-Links</a></li><li class="nav-list-item"><a href="javascript:;" class="popup-trigger"> Search </a></li><div class="site-search">
+<div class="popup search-popup local-search-popup" id="search-popup">
+<div class="local-search-header clearfix">
+<span class="search-icon">
+<i class="fa fa-search"></i>
+</span>
+<span class="popup-btn-close">
+<i class="fa fa-times-circle"></i>
+</span>
+<div class="local-search-input-wrapper">
+<input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+</div>
+</div>
+<div id="local-search-result"></div>
+</div>
+</div></ul></section></header><main class="container"><ul class="home post-list"><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/11/02/【Day-8】11-2模拟赛-Summary/">【Day -8】11-2模拟赛 Summary</a></h2><div class="post-info">Nov 2, 2017</div><div class="post-content"><h2 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h2><p>这两天分数和排名真的是大起大落，Rank直接从十几跌到70，第二题没注意到快速幂还带个log, 于是爆成10分。快速幂那里预处理下就有30分了。第三题也是30分暴力，数组开小了爆成0分。于是总分就顺利地从预计的160掉到了110，惨不忍睹。。。 第一题开始以为是以前做过的一个树形Dp算贡献的题，想了10min发现自己就是个傻逼，裸的TopSort没看出来，然后欢乐地打上了一个TopSort + 优先队列就Ａ了。第二题一看到期望就懵了，想了好久实在想不出来就打了个30分暴力。第三题也不会正解，打了个30分的Kruskal。本来想着160分好像还可以，结果。。。</p></div><a class="read-more" href="/2017/11/02/【Day-8】11-2模拟赛-Summary/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/11/01/【Day-9】11-1模拟赛-Summary/">【Day -9】11-1模拟赛 Summary</a></h2><div class="post-info">Nov 1, 2017</div><div class="post-content"><h2 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h2><p>今天应该是有史以来考得最好的一次，希望最后这10天能继续保持这个状态，会做的题不写挂，没思路的把暴力分拿满，NOIP一等应该没问题。 
+开考后将近40min都在想第一题，知道是要二分但是时间复杂度感觉会挂，加上时间过了这么久就先写了个60分的暴力二分（其实和正解已经差不多了）。
+然后去看第二题，看着数据范围这么小感觉就是搜索题，但是不会迭代加深搜索，于是打了个感觉上有20-30分的暴力。
+仔细看了数据范围后发现N = 8时最坏的情况我的暴力要跑2s，突然特别虚，于是默默地打了个表（总共有40320种情况我只打了前2000种情况，其他的还是按暴力跑）
+结果居然过了N = 8的情况的所有点（可能是数据太水，没卡掉。。。）第三题不会做，打了30分暴力走人。
+最后剩30min的时候听说机房其他人都写了第一题正解，于是跑过去想第一题，忽然觉得自己就是个傻逼，只要在之前的暴力上再搞一次二分就能过了。
+最后10min匆匆忙忙打完，拍了下大样例好像没问题就交了。</p></div><a class="read-more" href="/2017/11/01/【Day-9】11-1模拟赛-Summary/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/10/30/【Day-11】10-30模拟赛-Summary/">【Day -11】10-30模拟赛 Summary</a></h2><div class="post-info">Oct 30, 2017</div><div class="post-content"><h2 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h2><p>今天题目不是很难，但是该拿的分没有拿到。第一题只想出来50分暴力，第二题做过原题，会正解做法但是被卡常。。。本来用的priority_queue，本地测发现会超时，然后换成了pb_ds，本地跑出来还蛮快的，结果别人用优先队列的有50分，我的只有30分。不过这次又学到了一种新的卡常技巧:make_heap()，好像可以基于数组或者vector实现，用在第二题上的话可以拿到满分。然后第三题不会，暴力好像打挂了</p></div><a class="read-more" href="/2017/10/30/【Day-11】10-30模拟赛-Summary/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/10/26/【Day-15】10-26模拟赛-Summary/">【Day -15】10-26模拟赛 Summary</a></h2><div class="post-info">Oct 26, 2017</div><div class="post-content"><h2 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h2><p>今天考得还算正常，暴力分都拿到，虽然第一题傻逼题正解没想出来，但是挂得还算不是很惨。主要失误的原因在于第一题开始看错题，花了将近1h去打暴力，打完之后发现样例不对，但是找程序错误没找出来，才发现是把题看错了，于是只好匆匆忙忙把暴力稍微改下久跑去看后两题了，但事实上按照正确的题意去想的话应该是能想出正解的。第二三题都打的暴力，第二题Dp不会写，看来Dp还是我的一个弱项，这几天要加强一下Dp的刷题。第三题用LCA随便乱搞了一下就没管了。</p></div><a class="read-more" href="/2017/10/26/【Day-15】10-26模拟赛-Summary/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/10/24/【Day-17】10-24模拟赛-Summary/">【Day -17】10-24模拟赛 Summary</a></h2><div class="post-info">Oct 24, 2017</div><div class="post-content"><h2 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h2><p>今天真的是炸掉了，第二题本来打出正解，没开long long,最后20分钟一直在调，没调出来，但是没交暴力，结果只有5分，第三题20分暴力忘记删调试信息，爆零。这两题是真的不应该失误的，如果这两题能拿到该有的分的话就能进rank20了。倒是第一题还比较稳，打的一维RMQ，不出意外地拿了60分。</p></div><a class="read-more" href="/2017/10/24/【Day-17】10-24模拟赛-Summary/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/10/24/【Day-18】10-23模拟赛-Summary/">【Day -18】10-23模拟赛 Summary</a></h2><div class="post-info">Oct 24, 2017</div><div class="post-content"><h2 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h2><p>今天考得还可以，该拿的分都拿到了，第一题30分暴力加上20分的特殊数据+第二题30分暴力都拿到了。但是第二题应该能够相出正解的，但是组合数学还是弱了些，没能推出来。</p></div><a class="read-more" href="/2017/10/24/【Day-18】10-23模拟赛-Summary/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/10/22/【Day-19】10-22模拟赛-Summary/">【Day -19】10-22模拟赛 Summary</a></h2><div class="post-info">Oct 22, 2017</div><div class="post-content"><h2 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h2><p>fuck出题人，题目名称有问题，改了之后我的找不到源程序。。。50分就这样没了。。。 考得还行，第一题开始觉得是数学题太难了，打完暴力找几个数据试了下发现答案就是N * M % P，于是就这样兴高采烈地A了第一题，后来还是不放心，拍了1万组数据发现没问题就过了。第二题其实也是个简单的区间DP问题，考场上往这方面想过，但是没想出来。第三题t=0的50分很好写，直接按照右端点排序，贪心取就可以了。</p></div><a class="read-more" href="/2017/10/22/【Day-19】10-22模拟赛-Summary/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/10/20/【Day-21】10-20模拟赛-Summary/">【Day -21】10-20模拟赛 Summary</a></h2><div class="post-info">Oct 20, 2017</div><div class="post-content"><h2 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h2><p>今天真的是炸了。。。第一题60分做法打了接近2h，其他两道题暴力全都打挂。。。一个是数组开小，一个是没加绝对值。。。总结一下，第一题一开始就有想法，推式子推到一半感觉自己会了就马上去打代码，写着写着才发现不对，然后又重新想，于是耗费了太多的时间。第二三题看了下题感觉不太可做就只打了个暴力没想到还写错了。。。</p></div><a class="read-more" href="/2017/10/20/【Day-21】10-20模拟赛-Summary/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/10/19/【Day-22】10-19模拟赛-Summary/">【Day -22】10-19模拟赛 Summary</a></h2><div class="post-info">Oct 19, 2017</div><div class="post-content"><h2 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h2><p>今天考得还可以，但有很大的进步空间。第一题花了1h想，分了N &gt; M和N &lt; M两种情况讨论，本来信心满满的觉得可以A掉，但是事实上我求出来的并不是最优解，于是只拿了10分。如果这个100分拿到，rank可以进步很多。第二题和第三题的暴力分基本上拿到了，第二题找规律还搞了个30分。总的来说，如果说第一题打了暴力拍出问题，发现问题并改正，那么就可以算是考得非常好了。</p></div><a class="read-more" href="/2017/10/19/【Day-22】10-19模拟赛-Summary/">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a class="post-title-link" href="/2017/10/17/【Day-24】10-17模拟赛-Summary/">【Day -24】10-17模拟赛 Summary</a></h2><div class="post-info">Oct 17, 2017</div><div class="post-content"><h2 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h2><p>今天考的特别差，第一题刚开始花30min推了下式子，感觉好像推出来了之后就马上打了代码，发现过了样例加上和sxy拍了一些小数据是对的之后就没去管了，但是考完之后发现有些容斥没考虑到，导致只拿到了puts("0")的三十分。。。后面的时间基本上都在想第二题。本来朝着状压DP的方向去想，但是听见sxy说DP特别难打后来就乱搞了一个贪心，结果只有10分。。。第三题考试的时候只大概看了下题，以为是DP就没怎么去想，题解出来之后才知道是一个简单的最短路 + 算贡献的问题。</p></div><a class="read-more" href="/2017/10/17/【Day-24】10-17模拟赛-Summary/">...more</a></article></li></ul></main><footer><ul class="pagination"><li class="link"><a href="/page/38/"><i class="icon icon-arror-left"></i></a></li><li class="other"><a href="/page/37"><span>37</span></a></li><li class="other"><a href="/page/38/"><span>38</span></a></li><li class="current"><a href="/page/39/index.html"><span>39</span></a></li><li class="other"><a href="/page/40/"><span>40</span></a></li><li class="other"><a href="/page/41"><span>41</span></a></li><li class="link"><a href="/page/40/"><i class="icon icon-arror-right"></i></a></li></ul><div class="copyright"><p>© 2017 - 2020 靡不有初，鲜克有终</p><p>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>, theme by <a href="https://github.com/hk-cnyali" target="_blank">hk_cnyali</a>.</p></div><script type="text/javascript" src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script><script>// Popup Window;
+var isfetched = false;
+var isXml = true;
+// Search DB path;
+var search_path = "search.json";
+if (search_path.length === 0) {
+  search_path = "search.xml";
+} else if (/json$/i.test(search_path)) {
+  isXml = false;
+}
+var path = "/" + search_path;
+// monitor main search box;
+// console.log(path);
+
+var onPopupClose = function (e) {
+  // console.log("onPopupClose");
+  $('.popup').hide();
+  $('#local-search-input').val('');
+  $('.search-result-list').remove();
+  $('#no-result').remove();
+  $(".local-search-pop-overlay").remove();
+  $('body').css('overflow', '');
+}
+
+function proceedsearch() {
+  // console.log("proceed_search");
+  $("body")
+    .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+    .css('overflow', 'hidden');
+  $('.search-popup-overlay').click(onPopupClose);
+  $('.popup').toggle();
+  var $localSearchInput = $('#local-search-input');
+  $localSearchInput.attr("autocapitalize", "none");
+  $localSearchInput.attr("autocorrect", "off");
+  $localSearchInput.focus();
+}
+
+// search function;
+var searchFunc = function(path, search_id, content_id) {
+  // console.log("searchFunc");
+  'use strict';
+
+  // start loading animation
+  $("body")
+    .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+      '<div id="search-loading-icon">' +
+      '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+      '</div>' +
+      '</div>')
+    .css('overflow', 'hidden');
+  $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+  // console.log("start_loading_animation");
+
+  // console.log(path);
+  // console.log(isXml);
+  // console.log(document.getElementById(search_id));
+
+  $.ajax({
+    url: path,
+    dataType: isXml ? "xml" : "json",
+    async: true,
+    error: function(res) {
+      // console.log("error!");
+    }, 
+    success: function(res) {
+      // console.log("success!");
+      // get the contents from search data
+      isfetched = true;
+      $('.popup').detach().appendTo('.header');
+      var datas = isXml ? $("entry", res).map(function() {
+        return {
+          title: $("title", this).text(),
+          content: $("content",this).text(),
+          url: $("url" , this).text()
+        };
+      }).get() : res;
+      var input = document.getElementById(search_id);
+      // console.log("input = " + input);
+      var resultContent = document.getElementById(content_id);
+      // console.log("resultContent = " + resultContent);
+      var inputEventFunction = function() {
+        var searchText = input.value.trim().toLowerCase();
+        var keywords = searchText.split(/[\s\-]+/);
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        var resultItems = [];
+        if (searchText.length > 0) {
+          // perform local searching
+          datas.forEach(function(data) {
+            var isMatch = false;
+            var hitCount = 0;
+            var searchTextCount = 0;
+            var title = data.title.trim();
+            var titleInLowerCase = title.toLowerCase();
+            var content = data.content.trim().replace(/<[^>]+>/g,"");
+            var contentInLowerCase = content.toLowerCase();
+            var articleUrl = decodeURIComponent(data.url);
+            var indexOfTitle = [];
+            var indexOfContent = [];
+            // only match articles with not empty titles
+            if(title != '') {
+              keywords.forEach(function(keyword) {
+                function getIndexByWord(word, text, caseSensitive) {
+                  var wordLen = word.length;
+                  if (wordLen === 0) {
+                    return [];
+                  }
+                  var startPosition = 0, position = [], index = [];
+                  if (!caseSensitive) {
+                    text = text.toLowerCase();
+                    word = word.toLowerCase();
+                  }
+                  while ((position = text.indexOf(word, startPosition)) > -1) {
+                    index.push({position: position, word: word});
+                    startPosition = position + wordLen;
+                  }
+                  return index;
+                }
+
+                indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+              });
+              if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                isMatch = true;
+                hitCount = indexOfTitle.length + indexOfContent.length;
+              }
+            }
+
+            // show search results
+
+            if (isMatch) {
+              // sort index by position of keyword
+
+              [indexOfTitle, indexOfContent].forEach(function (index) {
+                index.sort(function (itemLeft, itemRight) {
+                  if (itemRight.position !== itemLeft.position) {
+                    return itemRight.position - itemLeft.position;
+                  } else {
+                    return itemLeft.word.length - itemRight.word.length;
+                  }
+                });
+              });
+
+              // merge hits into slices
+
+              function mergeIntoSlice(text, start, end, index) {
+                var item = index[index.length - 1];
+                var position = item.position;
+                var word = item.word;
+                var hits = [];
+                var searchTextCountInSlice = 0;
+                while (position + word.length <= end && index.length != 0) {
+                  if (word === searchText) {
+                    searchTextCountInSlice++;
+                  }
+                  hits.push({position: position, length: word.length});
+                  var wordEnd = position + word.length;
+
+                  // move to next position of hit
+
+                  index.pop();
+                  while (index.length != 0) {
+                    item = index[index.length - 1];
+                    position = item.position;
+                    word = item.word;
+                    if (wordEnd > position) {
+                      index.pop();
+                    } else {
+                      break;
+                    }
+                  }
+                }
+                searchTextCount += searchTextCountInSlice;
+                return {
+                  hits: hits,
+                  start: start,
+                  end: end,
+                  searchTextCount: searchTextCountInSlice
+                };
+              }
+
+              var slicesOfTitle = [];
+              if (indexOfTitle.length != 0) {
+                slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+              }
+
+              var slicesOfContent = [];
+              while (indexOfContent.length != 0) {
+                var item = indexOfContent[indexOfContent.length - 1];
+                var position = item.position;
+                var word = item.word;
+                // cut out 100 characters
+                var start = position - 20;
+                var end = position + 80;
+                if(start < 0){
+                  start = 0;
+                }
+                if (end < position + word.length) {
+                  end = position + word.length;
+                }
+                if(end > content.length){
+                  end = content.length;
+                }
+                slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+              }
+
+              // sort slices in content by search text's count and hits' count
+
+              slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                  return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                  return sliceRight.hits.length - sliceLeft.hits.length;
+                } else {
+                  return sliceLeft.start - sliceRight.start;
+                }
+              });
+
+              // select top N slices in content
+
+              var upperBound = parseInt("1");
+              if (upperBound >= 0) {
+                slicesOfContent = slicesOfContent.slice(0, upperBound);
+              }
+              // console.log(upperBound);
+
+              // highlight title and content
+
+              function highlightKeyword(text, slice) {
+                var result = '';
+                var prevEnd = slice.start;
+                slice.hits.forEach(function (hit) {
+                  result += text.substring(prevEnd, hit.position);
+                  var end = hit.position + hit.length;
+                  result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                  prevEnd = end;
+                });
+                result += text.substring(prevEnd, slice.end);
+                return result;
+              }
+
+              var resultItem = '';
+
+              if (slicesOfTitle.length != 0) {
+                resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+              } else {
+                resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+              }
+
+              slicesOfContent.forEach(function (slice) {
+                resultItem += "<a>" +
+                  "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                  "...</p>" + "</a>";
+              });
+
+              resultItem += "</li>";
+              resultItems.push({
+                item: resultItem,
+                searchTextCount: searchTextCount,
+                hitCount: hitCount,
+                id: resultItems.length
+              });
+            }
+          })
+        };
+        if (keywords.length === 1 && keywords[0] === "") {
+          resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+        } else if (resultItems.length === 0) {
+          resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+        } else {
+          resultItems.sort(function (resultLeft, resultRight) {
+            if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+              return resultRight.searchTextCount - resultLeft.searchTextCount;
+            } else if (resultLeft.hitCount !== resultRight.hitCount) {
+              return resultRight.hitCount - resultLeft.hitCount;
+            } else {
+              return resultRight.id - resultLeft.id;
+            }
+          });
+          var searchResultList = '<ul class=\"search-result-list\">';
+          resultItems.forEach(function (result) {
+            searchResultList += result.item;
+          })
+          searchResultList += "</ul>";
+          resultContent.innerHTML = searchResultList;
+        }
+      }
+
+      if ('auto' === "auto") {
+        input.addEventListener('input', inputEventFunction);
+      } else {
+        $('.search-icon').click(inputEventFunction);
+        input.addEventListener('keypress', function (event) {
+          if (event.keyCode === 13) {
+            inputEventFunction();
+          }
+        });
+      }
+
+      // remove loading animation
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+
+      proceedsearch();
+    }
+  });
+}
+
+// handle and trigger popup window;
+$('.popup-trigger').click(function(e) {
+  e.stopPropagation();
+  if (isfetched === false) {
+    searchFunc(path, 'local-search-input', 'local-search-result');
+  } else {
+    proceedsearch();
+  };
+});
+
+$('.popup-btn-close').click(onPopupClose);
+$('.popup').click(function(e){
+  // console.log("popup.click");
+  e.stopPropagation();
+});
+$(document).on('keyup', function (event) {
+  // console.log("keyup");
+  var shouldDismissSearchPopup = event.which === 27 && $('.search-popup').is(':visible');
+  if (shouldDismissSearchPopup) {
+    onPopupClose();
+  }
+});</script></footer></div><script>var wrap = document.getElementById('wrap');
+window.onload = function () {
+  wrap.className += ' done';
+}
+</script></body></html>
